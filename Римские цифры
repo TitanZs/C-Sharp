@@ -1,0 +1,41 @@
+using System;
+
+namespace Arrays
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int kol = 4000;
+            string[] arr0 = new string[kol+1];
+
+            int[] arr1 = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+            string[] arr2 = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+            int i = 0;
+            string s = "";
+            for (int t = kol; t > 0; t--)
+            {
+                int u = t;
+                while (u > 0)              //крутим цикл пока n>0
+                {
+                    if (arr1[i] <= u)      // i - элемент массива арабских цифр меньше либо равен числу n то
+                    {
+                        u = u - arr1[i];   // от числа вычитаем его эквивалент в массиве арабском 
+                        s = s + arr2[i];  // в строку записываем его римское значение
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                arr0[t] = s;
+                i = 0;
+                s = "";
+            }
+            for (i = 1; i <= kol; i++)
+            {
+                Console.WriteLine(arr0[i]);
+            }
+        }
+    }
+}
