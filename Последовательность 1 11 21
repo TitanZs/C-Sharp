@@ -1,0 +1,37 @@
+using System;
+using System.Text;
+using System.Linq;
+
+class Program
+{
+    static string posledov(string number)
+    {
+        StringBuilder result = new StringBuilder();
+
+        char repeat = number[0];
+        number = number.Substring(1, number.Length - 1) + " ";
+        int val = 1;
+
+        foreach (char actual in number)
+        {
+            if (actual != repeat)
+            {
+                result.Append(Convert.ToString(val) + repeat);
+                val = 1;
+                repeat = actual;
+            }
+            else
+            {
+                val += 1;
+            }
+        }
+        return result.ToString();
+    }
+
+    static void Main(string[] args)
+    {
+        Console.Write("Введите число в для преобразования = ");
+        string n = Console.ReadLine(); 
+        Console.WriteLine(posledov(n));
+    }
+}
