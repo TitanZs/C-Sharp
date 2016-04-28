@@ -1,0 +1,45 @@
+using System;
+
+namespace Arrays
+{
+    class Program
+    {
+        public static void spiral(int[,] arr, int row, int col)
+        {
+            int kol = 1;
+ 
+            for (int l = 0; l < row-1; l+=2 )
+            {
+                for (int i = 0; i < row; i++)
+                    arr[l, i] = kol++;
+
+                for (int i = row-1; i >= 0; i--)
+                    arr[l+1, i] = kol++;
+            }
+            
+         
+        }
+        static void Main(string[] args)
+        {
+            int row = 10;
+            int col = 10;
+            int[,] intArray1 = new int[row, col];
+
+            spiral(intArray1, row, col);
+
+            for (int i = 0; i < row; i++)
+            {
+                for (int y = 0; y < col; y++)
+                {
+                    Console.Write("{0,5}", intArray1[i, y]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+
+
+
+    }
+
+}
