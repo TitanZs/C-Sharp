@@ -1,0 +1,24 @@
+using System;
+
+namespace Arrays
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int row = 31;
+            int col = 6;
+            int[,] intArray1 = new int[row, col];
+
+            for(int i = 0, u = 1; i < row; i ++)
+            {
+                for(int y = 0; y < col; y++)
+                {
+                    intArray1[i, y] = u++;
+                    Console.Write("{0,5}", intArray1[i, y]);
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
