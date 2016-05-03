@@ -1,0 +1,36 @@
+using System;
+
+namespace Arrays
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Введите число в для преобразования = ");
+            int n = Convert.ToInt32(Console.ReadLine());
+            int step = 0;
+            char[,] arr = new char[2, 3];
+           
+                    arr[0, 0] = 'Г';
+                    arr[0, 1] = 'Г';
+                    arr[0, 2] = 'Г';
+                    arr[1, 2] = 'Г';
+
+                    for (int f = 0; f < n; f++)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            Console.Write("{0,"+step + " }", " ");
+                            for (int y = 0; y < 3; y++)
+                            {
+                                Console.Write("{0}", arr[i, y]);
+                            }
+                            Console.WriteLine();
+                        }
+                        step += 3;                            
+                    }
+                 
+        }
+    }
+
+}
