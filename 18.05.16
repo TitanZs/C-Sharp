@@ -21,3 +21,77 @@ class test
             Console.WriteLine("Строка \"" + str + "\" является полиндромом");       
     }
 }
+// 2 Задание
+using System;
+class test
+{
+    static void Main()
+    {
+        int chars = 0;
+        int words = 0;
+        int glasnie = 0;
+        int soglasnie = 0;
+        int znaki = 0;
+        int numbers = 0;
+        int other_char = 0;
+        String d = "В лесу родилась елочка, в лесу она росла. Ура товарищи!!! (Песня)";
+        String str = d;      
+        for(int i = 0; i <= d.Length-1; i++)
+        {
+            Console.Write(d[i]);
+            
+            chars++;
+            if (d[i] == ' ')
+                words++;
+            else if (d[i] == 'а' || 
+                        d[i] == 'о' || 
+                        d[i] == 'у' || 
+                        d[i] == 'и' ||
+                        d[i] == 'я' ||
+                        d[i] == 'е' ||
+                        d[i] == 'ю' )
+                glasnie++;
+            else if (d[i] == 'й' || 
+                        d[i] == 'ц' || 
+                        d[i] == 'к' || 
+                        d[i] == 'н' ||
+                        d[i] == 'г' ||
+                        d[i] == 'ш' ||
+                        d[i] == 'щ' ||
+                        d[i] == 'з' ||
+                        d[i] == 'х' ||
+                        d[i] == 'ъ' ||
+                        d[i] == 'ф' ||
+                        d[i] == 'ы' ||
+                        d[i] == 'в' ||
+                        d[i] == 'п' ||
+                        d[i] == 'р' ||
+                        d[i] == 'л' ||
+                        d[i] == 'д' ||
+                        d[i] == 'ж' ||
+                        d[i] == 'э' ||
+                        d[i] == 'щ' ||
+                        d[i] == 'ч' ||
+                        d[i] == 'с' ||
+                        d[i] == 'м' ||
+                        d[i] == 'т' ||
+                        d[i] == 'б')
+                soglasnie++;
+            else if (d[i] == ',' || d[i] == '.' || d[i] == '!' || d[i] == '?')
+                znaki++;
+            else if (d[i] >= 0 && d[i] <= 9)
+                numbers++;
+            else if (d[i] == ']' || d[i] == '[' || d[i] == '(' || d[i] == ')')
+                other_char++;    
+
+        }
+        Console.WriteLine();
+        Console.WriteLine("Всего символов:\t {0}", chars);
+        Console.WriteLine("Всего Слов:\t {0}", words);
+        Console.WriteLine("Всего Гласных:\t {0}", glasnie);
+        Console.WriteLine("Всего Согласных:\t {0}", soglasnie);
+        Console.WriteLine("Всего Знаков пунктуации:\t {0}", znaki);
+        Console.WriteLine("Всего цифр:\t {0}", numbers);
+        Console.WriteLine("Всего Др. символов:\t {0}", other_char); 
+    }
+}
