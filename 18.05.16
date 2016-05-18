@@ -143,6 +143,32 @@ class test
     }
        
 }
+// 4 задание
+using System;
+using System.Text; // for StringBuilder
+
+class test
+{
+    
+    static void Main()
+    {
+        
+        StringBuilder a = new StringBuilder("asdsdw", 4);
+        char ch;
+        for (int i = 0; i < a.Length; i++)
+        {
+            for (int j = 0; j < a.Length - 1; j++)
+            {
+                ch = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = ch;
+            }
+            Console.WriteLine(a);
+        }
+        
+    }
+       
+}
 // 5 задаие 
 using System;
 using System.Globalization;
