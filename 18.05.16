@@ -1,0 +1,23 @@
+// 1. строки полиндромы
+using System;
+class test
+{
+    static void Main()
+    {
+        int chek = 0;
+        String d = "Ешь немытого ты меньше";
+        String str = d;
+         d = d.Replace(" ", "");
+         d = d.ToLower();        
+        for(int i = 0, j = d.Length-1; i <= j ; i++, j --)
+        {
+            Console.WriteLine(d[i] + " " + d[j]);
+            if(d[i] != d[j])          
+                chek = 1;                      
+        }
+        if (chek == 1)
+            Console.WriteLine("Строка \"" + str + "\" не является полиндромом");              
+        else
+            Console.WriteLine("Строка \"" + str + "\" является полиндромом");       
+    }
+}
