@@ -95,3 +95,51 @@ class test
         Console.WriteLine("Всего Др. символов:\t {0}", other_char); 
     }
 }
+
+// 3 задание 
+
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+
+class test
+{
+    static void  temp_func(ref String d)
+    {        
+        d = d.ToLower();
+        d = d.Replace(" ", "");
+        d = d.Replace(",", "");
+        d = d.Replace(".", "");
+        d = d.Replace(":", "");
+        d = d.Replace(";", "");
+        d = d.Replace("!", "");
+        
+        char[] a = d.ToCharArray();
+        Array.Sort(a);
+        d = new string(a);
+    }
+    static void Main()
+    {
+        int chek = 0;
+        String d = "Аз есмь строка, живу я, мерой остр.";
+        temp_func(ref d) ;
+        String g = "За семь морей ростка я вижу рост!";
+        temp_func(ref g);
+        for(int i = 0; i <= d.Length-1; i++)
+        {
+            if (d[i] != g[i])
+            {
+                chek = 1;
+                break;
+            }
+        }
+        if (chek == 1)
+            Console.WriteLine("Строка не является анаграммой  "); 
+        else
+            Console.WriteLine("Строка  является анаграммой  "); 
+       
+        
+    }
+       
+}
