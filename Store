@@ -1,0 +1,245 @@
+/* добавить в пример с магазином возможность хранения не только ноутбуков, но 
+ * также ещё и планшетов, мобильных телефонов, зарядок и чехлов. сделать базовый 
+ * класс для всех устройств, который обладает 
+ * свойствами Цена, Производитель, Категория, ГодВыпуска, Гарантия и Модель.
+
+реализовать возможности:
+- поиска по цене в указанном диапазоне (методом),
+- поиска по названию модели (с применением индексатора и регулярных выражений),
+- поиска по году выпуска (с применением индексатора),
+- поиска по типу устройства (например, ищем все ноутбуки).
+
+в результатах поиска должно быть не толь
+ */
+
+
+
+using System;
+
+abstract class Device
+{
+    protected Double price;
+    protected String vendor;
+    protected String category;
+    protected int year_out;
+    protected String garanty;
+    protected String model;
+    public Double cena
+    {
+        get { return price; }
+    }
+    public String vend
+    {
+        get { return vendor; }
+    }
+}
+
+class Laptop : Device
+{
+    String CPU_type;
+    bool cd_rom;
+    bool box;
+
+    public Laptop(String vendor, Double price, String categ, int y_o, String gara, String model, String cpu, bool cd, bool box)
+    {
+        this.vendor = vendor;
+        this.price = price;
+        category = categ;
+        year_out = y_o;
+        garanty = gara;
+        this.model = model;
+        CPU_type = cpu;
+        cd_rom = cd;
+        this.box = box;
+    }
+    public Double Price
+    {
+        get { return price; }
+        set { if (value > 0) price = value; }
+    }
+    public String Vendor
+    {
+        get { return vendor; }
+        set { vendor = value; }
+    }
+    public String Category
+    {
+        get { return category; }
+        set { category = value; }
+    }
+    public int YearOut
+    {
+        get { return year_out; }
+        set { year_out = value; }
+    }
+    public String Garanty
+    {
+        get { return garanty; }
+        set { garanty = value; }
+    }
+    public String Model
+    {
+        get { return model; }
+        set { model = value; }
+    }
+    public override String ToString()    { return "Vendor: " + vendor + ",  price: $" + price +  ",  Category: " + category + ", Year out: " + year_out + ", Model: " + model ;    }
+}
+class CellPhone : Device
+{
+    String standart;
+    String type;
+    String system;
+
+    public CellPhone(String vendor, Double price, String categ, int y_o, String gara, String model, String stand, String typ, String sys)
+    {
+        this.vendor = vendor;
+        this.price = price;
+        category = categ;
+        year_out = y_o;
+        garanty = gara;
+        this.model = model;
+        standart = stand;
+        type = typ;
+        system = sys;
+    }
+    public Double Price
+    {
+        get { return price; }
+        set { if (value > 0) price = value; }
+    }
+    public String Vendor
+    {
+        get { return vendor; }
+        set { vendor = value; }
+    }
+    public String Category
+    {
+        get { return category; }
+        set { category = value; }
+    }
+    public int YearOut
+    {
+        get { return year_out; }
+        set { year_out = value; }
+    }
+    public String Garanty
+    {
+        get { return garanty; }
+        set { garanty = value; }
+    }
+    public String Model
+    {
+        get { return model; }
+        set { model = value; }
+    }
+    public override String ToString() { return "Vendor: " + vendor + ",  price: $" + price + ",  Category: " + category + ", Year out: " + year_out + ", Model: " + model; }
+}
+
+
+class Store
+{
+    uint count;
+    private Device[] Device;
+    public Store()
+    {
+        //Device = new Device[1];
+        count = 0;
+    }
+    public Store(uint size)
+    {
+        Device = new Device[size];
+        count = size;
+    }
+    public int Length
+    {
+        get { return Device.Length; }
+    }
+    public void AddLaptop(String vendor, Double price, String categ, int y_o, String gara, String model, String cpu, bool cd, bool box)
+    { 
+        if (count == 0)
+        {
+            Device = new Device[count+1];
+            Device[0] = new Laptop(vendor, price, categ, y_o, gara, model, cpu, cd, box);
+        }
+        else if (count > 0)
+        {
+            Device[] temp = new Device[count+1];
+            int i = 0;
+            for (; i < count; i++)
+                temp[i] = Device[i];
+            temp[i ] = new Laptop(vendor, price, categ, y_o, gara, model, cpu, cd, box);
+            Device = temp;
+        }
+        count++;
+    }
+    public void AddCellPhone(String vendor, Double price, String categ, int y_o, String gara, String model, String stand, String typ, String sys)
+    {
+        if (count == 0)
+        {
+            Device = new Device[count + 1];
+            Device[0] = new CellPhone(vendor, price, categ, y_o, gara, model, stand, typ, sys);
+        }
+        else if (count > 0)
+        {
+            Device[] temp = new Device[count + 1];
+            int i = 0;
+            for (; i < count; i++)
+                temp[i] = Device[i];
+            temp[i] = new CellPhone(vendor, price, categ, y_o, gara, model, stand, typ, sys);
+            Device = temp;
+        }
+        count++;
+    }
+    public void print ()
+    {
+        for (int i = 0; i < count; i++)
+            Console.WriteLine(Device[i].ToString ());
+    }
+    public Device this[String index]
+    {
+        get
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (index == Device[i].vend)
+                    return Device[i];
+            }
+            return Device[0];
+        }
+        set {  }
+    }
+    public void SearchOfPrice( int min, int max)
+    {
+        Console.WriteLine("\nLimit price: > " + min + " and < " + max);
+        for (int i = 0; i < count; i++)
+        { 
+            if (Device[i].cena > min && Device[i].cena < max)
+                Console.WriteLine(Device[i].ToString());
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Store s = new Store();
+        s.AddLaptop("Samsung", 5200, "Netbook", 2015, "Yes", "S3000", "Intel", false, true);
+        s.AddLaptop("Asus", 4700, "Notebook", 2011, "No", "Giga2000", "AMD", true, false);
+        s.AddLaptop("Toshiba", 4300, "Laptop", 2009, "Yes", "UltaNote4020", "AMD", true, false);
+        s.AddCellPhone("Nokia", 1233, "Phone", 2000, "No", "3310", "Intel", "Monoblock", "Symbian");
+       
+            try
+            {
+                 s.print();
+                 s.SearchOfPrice(1000, 2000);
+            }
+            catch (NullReferenceException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
+
+
+    }
+}
