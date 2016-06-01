@@ -15,41 +15,50 @@
 
 
 using System;
-
+using System.Collections;
+using System.Collections.Generic;
 abstract class Device
 {
     protected Double price;
     protected String vendor;
     protected String category;
-    protected int year_out;
+    protected int YearOt;
     protected String garanty;
     protected String model;
-    public Double cena
+    public Double Cena
     {
         get { return price; }
     }
-    public String vend
+    public String Vendor
     {
         get { return vendor; }
+    }
+    public String Category
+    {
+        get { return category; }
+    }
+    public String Model
+    {
+        get { return model; }
     }
 }
 
 class Laptop : Device
 {
-    String CPU_type;
-    bool cd_rom;
+    String CpuType;
+    bool CdRom;
     bool box;
 
-    public Laptop(String vendor, Double price, String categ, int y_o, String gara, String model, String cpu, bool cd, bool box)
+    public Laptop(String vendor, Double price, String categ, int YO, String gara, String model, String cpu, bool cd, bool box)
     {
         this.vendor = vendor;
         this.price = price;
         category = categ;
-        year_out = y_o;
+        YearOt = YO;
         garanty = gara;
         this.model = model;
-        CPU_type = cpu;
-        cd_rom = cd;
+        CpuType = cpu;
+        CdRom = cd;
         this.box = box;
     }
     public Double Price
@@ -69,8 +78,8 @@ class Laptop : Device
     }
     public int YearOut
     {
-        get { return year_out; }
-        set { year_out = value; }
+        get { return YearOt; }
+        set { YearOt = value; }
     }
     public String Garanty
     {
@@ -82,7 +91,7 @@ class Laptop : Device
         get { return model; }
         set { model = value; }
     }
-    public override String ToString()    { return "Vendor: " + vendor + ",  price: $" + price +  ",  Category: " + category + ", Year out: " + year_out + ", Model: " + model ;    }
+    public override String ToString() { return "Vendor: " + vendor + ",  price: $" + price + ",  Category: " + category + ", Year out: " + YearOt + ", Model: " + model; }
 }
 class CellPhone : Device
 {
@@ -90,12 +99,12 @@ class CellPhone : Device
     String type;
     String system;
 
-    public CellPhone(String vendor, Double price, String categ, int y_o, String gara, String model, String stand, String typ, String sys)
+    public CellPhone(String vendor, Double price, String categ, int YO, String gara, String model, String stand, String typ, String sys)
     {
         this.vendor = vendor;
         this.price = price;
         category = categ;
-        year_out = y_o;
+        YearOt = YO;
         garanty = gara;
         this.model = model;
         standart = stand;
@@ -119,8 +128,8 @@ class CellPhone : Device
     }
     public int YearOut
     {
-        get { return year_out; }
-        set { year_out = value; }
+        get { return YearOt; }
+        set { YearOt = value; }
     }
     public String Garanty
     {
@@ -132,68 +141,36 @@ class CellPhone : Device
         get { return model; }
         set { model = value; }
     }
-    public override String ToString() { return "Vendor: " + vendor + ",  price: $" + price + ",  Category: " + category + ", Year out: " + year_out + ", Model: " + model; }
+    public override String ToString() { return "Vendor: " + vendor + ",  price: $" + price + ",  Category: " + category + ", Year out: " + YearOt + ", Model: " + model; }
 }
 
 
 class Store
 {
     uint count;
-    private Device[] Device;
+    private List<Device> DeviceList;
+    public uint Length
+    {
+        get { return count; }
+    }
     public Store()
     {
-        //Device = new Device[1];
-        count = 0;
+        DeviceList = new List<Device>();
     }
-    public Store(uint size)
-    {
-        Device = new Device[size];
-        count = size;
-    }
-    public int Length
-    {
-        get { return Device.Length; }
-    }
-    public void AddLaptop(String vendor, Double price, String categ, int y_o, String gara, String model, String cpu, bool cd, bool box)
-    { 
-        if (count == 0)
-        {
-            Device = new Device[count+1];
-            Device[0] = new Laptop(vendor, price, categ, y_o, gara, model, cpu, cd, box);
-        }
-        else if (count > 0)
-        {
-            Device[] temp = new Device[count+1];
-            int i = 0;
-            for (; i < count; i++)
-                temp[i] = Device[i];
-            temp[i ] = new Laptop(vendor, price, categ, y_o, gara, model, cpu, cd, box);
-            Device = temp;
-        }
+    public void AddLaptop(String vendor, Double price, String categ, int YO, String gara, String model, String cpu, bool cd, bool box)
+    {            
+        DeviceList.Add( new Laptop(vendor, price, categ, YO, gara, model, cpu, cd, box));
         count++;
     }
-    public void AddCellPhone(String vendor, Double price, String categ, int y_o, String gara, String model, String stand, String typ, String sys)
+    public void AddCellPhone(String vendor, Double price, String categ, int YO, String gara, String model, String stand, String typ, String sys)
     {
-        if (count == 0)
-        {
-            Device = new Device[count + 1];
-            Device[0] = new CellPhone(vendor, price, categ, y_o, gara, model, stand, typ, sys);
-        }
-        else if (count > 0)
-        {
-            Device[] temp = new Device[count + 1];
-            int i = 0;
-            for (; i < count; i++)
-                temp[i] = Device[i];
-            temp[i] = new CellPhone(vendor, price, categ, y_o, gara, model, stand, typ, sys);
-            Device = temp;
-        }
+        DeviceList.Add(new CellPhone(vendor, price, categ, YO, gara, model, stand, typ, sys));
         count++;
     }
     public void print ()
     {
         for (int i = 0; i < count; i++)
-            Console.WriteLine(Device[i].ToString ());
+            Console.WriteLine(DeviceList[i].ToString());
     }
     public Device this[String index]
     {
@@ -201,20 +178,47 @@ class Store
         {
             for (int i = 0; i < count; i++)
             {
-                if (index == Device[i].vend)
-                    return Device[i];
+                if (index == DeviceList[i].Vendor )
+                    return DeviceList[i];
             }
-            return Device[0];
+            return DeviceList[0];
         }
         set {  }
+    }
+    public void SearchOfVendor(String str)
+    {
+        Console.WriteLine("\nVendor: > " + str);
+        for (int i = 0; i < count; i++)
+        {
+            if (DeviceList[i].Vendor  == str)
+                Console.WriteLine(DeviceList[i].ToString());
+        }
     }
     public void SearchOfPrice( int min, int max)
     {
         Console.WriteLine("\nLimit price: > " + min + " and < " + max);
         for (int i = 0; i < count; i++)
-        { 
-            if (Device[i].cena > min && Device[i].cena < max)
-                Console.WriteLine(Device[i].ToString());
+        {
+            if (DeviceList[i].Cena  > min && DeviceList[i].Cena  < max)
+                Console.WriteLine(DeviceList[i].ToString());
+        }
+    }
+    public void SearchOfCategory(String str)
+    {
+        Console.WriteLine("\nCategory: "+ str );
+        for (int i = 0; i < count; i++)
+        {
+            if (DeviceList[i].Category == str)
+                Console.WriteLine(DeviceList[i].ToString());
+        }
+    }
+    public void SearchOfModel(String str)
+    {
+        Console.WriteLine("\nModel: " + str);
+        for (int i = 0; i < count; i++)
+        {
+            if (DeviceList[i].Model ==  str )
+                Console.WriteLine(DeviceList[i].ToString());
         }
     }
 }
@@ -223,23 +227,23 @@ class Program
 {
     static void Main(string[] args)
     {
-        Store s = new Store();
-        s.AddLaptop("Samsung", 5200, "Netbook", 2015, "Yes", "S3000", "Intel", false, true);
-        s.AddLaptop("Asus", 4700, "Notebook", 2011, "No", "Giga2000", "AMD", true, false);
-        s.AddLaptop("Toshiba", 4300, "Laptop", 2009, "Yes", "UltaNote4020", "AMD", true, false);
-        s.AddCellPhone("Nokia", 1233, "Phone", 2000, "No", "3310", "Intel", "Monoblock", "Symbian");
-       
-            try
-            {
-                 s.print();
-                 s.SearchOfPrice(1000, 2000);
-            }
-            catch (NullReferenceException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-
-
-
+        try
+        {
+            Store s = new Store();
+            s.AddLaptop("Samsung", 5200, "Netbook", 2015, "Yes", "S3000", "Intel", false, true);
+            s.AddLaptop("Samsung", 2352, "Laptop", 2015, "Yes", "DD235", "Intel", false, true);
+            s.AddLaptop("Asus", 4700, "Notebook", 2011, "No", "Giga2000", "AMD", true, false);
+            s.AddLaptop("Toshiba", 4300, "Laptop", 2009, "Yes", "UltaNote4020", "AMD", true, false);
+            s.AddCellPhone("Nokia", 1233, "Phone", 2000, "No", "3310", "Intel", "Monoblock", "Symbian");
+            s.print();
+            s.SearchOfPrice(1000, 2000);
+            s.SearchOfModel("S3000");
+            s.SearchOfCategory("Laptop");
+            s.SearchOfVendor("Samsung");
+        }
+        catch (NullReferenceException exception)
+        {
+            Console.WriteLine(exception.Message);
+        }
     }
 }
