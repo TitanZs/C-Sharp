@@ -1,0 +1,102 @@
+using System;
+
+namespace Arrays
+{ 
+    class Fraction
+    {
+        private double cisl;
+        private double znam;
+        public Fraction(double cisl, double znam)
+        {
+            this.cisl = cisl;
+            this.znam = znam;
+        }
+        public static Boolean operator true(Fraction ans)
+        {
+            if (ans.cisl < ans.znam)
+                return true;
+            else
+                return false;
+        }
+
+        public static Boolean operator false(Fraction ans)
+        {
+            if (ans.cisl > ans.znam)
+                return false;
+            else
+                return true;
+        }
+        public static Fraction operator +(Fraction left, Fraction right)
+        {
+            return new Fraction(left.cisl  + right.cisl, left.znam + right.znam );
+        }
+        public static Fraction operator +(Fraction left, double val)
+        {
+            return new Fraction(left.cisl + val, left.znam + val);
+        }
+        public static Fraction operator -(Fraction left, Fraction right)
+        {
+            return new Fraction(left.cisl - right.cisl, left.znam - right.znam);
+        }
+        public static Fraction operator *(Fraction left, Fraction right)
+        {
+            return new Fraction(left.cisl * right.cisl, left.znam * right.znam);
+        }
+        public static Fraction operator *(Fraction left, int val)
+        {
+            return new Fraction(left.cisl * val, left.znam * val);
+        }
+        public static Fraction operator *(int val, Fraction left)
+        {
+            return new Fraction(left.cisl * val, left.znam * val);
+        }
+        public static Fraction operator /(Fraction left, Fraction right)
+        {
+            return new Fraction(left.cisl / right.cisl, left.znam / right.znam);
+        }
+
+        public static Boolean operator == (Fraction left, Fraction right)
+        {
+            if (left.cisl != right.znam)
+                return false;
+            else
+                return true;
+        }
+        public static Boolean operator !=(Fraction left, Fraction right)
+        {
+            if (left.cisl == right.znam)
+                return false;
+            else
+                return true;
+        }
+        public static Boolean operator >(Fraction left, Fraction right)
+        {
+            if (left.cisl > right.znam)
+                return true;
+            else
+                return false;
+        }
+        public static Boolean operator <(Fraction left, Fraction right)
+        {
+            if (left.cisl < right.znam)
+                return true;
+            else
+                return false;
+        }
+
+
+
+    }
+    class Program
+    {
+        static void Main()
+        {
+            Fraction f = new Fraction(10, 6);
+            int a = 10;
+            Fraction f1 = f * 2;
+            Fraction f2 = a * f;
+            double d = 1.5;
+            Fraction f3 = f + d;
+        }
+    }
+}
