@@ -1,12 +1,6 @@
 using System;
-
-
-
 namespace Arrays
 {
-    
-
-
     struct date
     {
         public int day;
@@ -32,14 +26,37 @@ namespace Arrays
         private int[] bals_ekzamen;
         private date dat_reg;
         private date dat_birth;
-    
-	    public student() : this ("Noname", 0, 2016, 0, 0)
+        public String Name
+        {
+            get
+            {
+                return name_stud;
+            }
+            set
+            {
+                name_stud = value;
+            }
+        }
+        public int Age
+        {
+            get
+            {
+                return Age;
+            }
+            set
+            {
+                Age = value;
+            }
+        }
+
+        public student()
+            : this("Noname", 0, 2016, 0, 0)
         { }
         public student(String name, int age, int y, int m, int d)
-	    {
+        {
             kol_bals_zach = 0;
-		    name_stud = name;
-		    this.age = age;
+            name_stud = name;
+            this.age = age;
             bals_zach = new int[1];
             dat_reg = new date();
             dat_reg.day = d;
@@ -48,23 +65,23 @@ namespace Arrays
             dat_birth = new date();
             dat_birth.day = 0;
             dat_birth.manth = 0;
-            dat_birth.year = 0;            
-	    }
+            dat_birth.year = 0;
+        }
         public void set_name(String bal)
         {
             name_stud = bal;
         }
 
-	    public void add_bals_zach(int bal)
-	    {
-		    int i;
+        public void add_bals_zach(int bal)
+        {
+            int i;
             int[] temp = new int[kol_bals_zach + 1];
             for (i = 0; i < kol_bals_zach; i++)
                 temp[i] = bals_zach[0];
-		    temp[i] = bal;
+            temp[i] = bal;
             bals_zach = temp;
             kol_bals_zach++;
-	    }
+        }
         public void add_bals_kurs(int bal)
         {
             int i;
@@ -85,18 +102,18 @@ namespace Arrays
             bals_ekzamen = temp;
             kol_bals_ekzamen++;
         }
-	    public void print()
-	    {
+        public void print()
+        {
             Console.WriteLine("Name:\t" + name_stud);
             Console.WriteLine("Age:\t" + age);
-            Console.WriteLine("Data reg: " + dat_reg.year + "-" + dat_reg.manth + "-" + dat_reg.day );
+            Console.WriteLine("Data reg: " + dat_reg.year + "-" + dat_reg.manth + "-" + dat_reg.day);
             Console.WriteLine("Data Birth: " + dat_birth.year + "-" + dat_birth.manth + "-" + dat_birth.day);
             if (kol_bals_zach > 0)
-		    {
+            {
                 Console.Write("Bals Zach:\t");
                 for (int i = 0; i < kol_bals_zach; i++)
-                    Console.WriteLine("\t" + bals_zach[i]);                 
-		    }
+                    Console.WriteLine("\t" + bals_zach[i]);
+            }
             if (kol_bals_zach > 0)
             {
                 Console.Write("Bals Kurs:\t");
@@ -109,89 +126,133 @@ namespace Arrays
                 for (int i = 0; i < kol_bals_ekzamen; i++)
                     Console.WriteLine("\t" + bals_ekzamen[i]);
             }
-	    }
+        }
     }
 
     class group
     {
-	    private student[] arr;
-	    private int  kol_vo_stud;
+        private student[] arr;
+        private int kol_vo_stud;
         private String name_group;
-	    private int  nomer_kursa;
-	    private String specializaciya;
+        private int nomer_kursa;
+        private String specializaciya;
 
-        
-	    public group() : this (10, "Нет имени", "Нет имени", 0)	{}
-	    public group(int kol) : this(kol, "Нет имени", "Нет имени", 0)	{}
-	    public group(int kol, String nam_grup) : this(kol, nam_grup, "Нет имени", 0)	{}
-	    public group(int kol, String nam_grup, String special) : this(kol, nam_grup, special, 0)	{}
-	    public group(int kol, String nam_grup, String special, int nom_kursa)
-	    {
-		    kol_vo_stud = kol;
-		    if (kol > 0)
-		    {
-			    arr = new student[kol_vo_stud];
-			    for (int i = 0; i < kol_vo_stud; i++)
-			    {
-				    arr[i] = new student();
-				    arr[i].set_name("No Name");
-			    }
-		    }
-		    name_group = nam_grup;
-		    nomer_kursa = nom_kursa;
-		    specializaciya = special;
-	    }
+        public int kolVoStud
+        {
+            get
+            {
+                return kolVoStud;
+            }
+            set
+            {
+                kolVoStud = value;
+            }
+        }
+        public int NomerKursa
+        {
+            get
+            {
+                return nomer_kursa;
+            }
+            set
+            {
+                nomer_kursa = value;
+            }
+        }
+        public String Specializaciya
+        {
+            get
+            {
+                return specializaciya;
+            }
+            set
+            {
+                specializaciya = value;
+            }
+        }
+        public String NameGroup
+        {
+            get
+            {
+                return name_group;
+            }
+            set
+            {
+                name_group = value;
+            }
+        }
+
+        public group() : this(10, "Нет имени", "Нет имени", 0) { }
+        public group(int kol) : this(kol, "Нет имени", "Нет имени", 0) { }
+        public group(int kol, String nam_grup) : this(kol, nam_grup, "Нет имени", 0) { }
+        public group(int kol, String nam_grup, String special) : this(kol, nam_grup, special, 0) { }
+        public group(int kol, String nam_grup, String special, int nom_kursa)
+        {
+            kol_vo_stud = kol;
+            if (kol > 0)
+            {
+                arr = new student[kol_vo_stud];
+                for (int i = 0; i < kol_vo_stud; i++)
+                {
+                    arr[i] = new student();
+                    arr[i].set_name("No Name");
+                }
+            }
+            name_group = nam_grup;
+            nomer_kursa = nom_kursa;
+            specializaciya = special;
+        }
         public void set_name_group(String nam)
-	    {
+        {
             name_group = nam;
-	    }
-	    public void set_nomer_gruppi(int nam)
-	    {
-		    nomer_kursa = nam;
-	    }
+        }
+        public void set_nomer_gruppi(int nam)
+        {
+            nomer_kursa = nam;
+        }
         public void set_specialization(String nam)
-	    {
+        {
             specializaciya = nam;
-	    }
-	    public void add_stud(String nam, String fam, String sec_name)
-	    {
+        }
+        public void add_stud(String nam, String fam, String sec_name)
+        {
 
-		    student[] temp = new student[kol_vo_stud + 1];
-		    for (int i = 0; i < kol_vo_stud; i++)
-		    {
-			    temp[i] = this.arr[i];
-		    }
-		    temp[kol_vo_stud] = new student();
-		    temp[kol_vo_stud].set_name(fam);
-		    kol_vo_stud++;
-		    arr = temp;
-	    }
-	 
-	    public void print()
-	    {
+            student[] temp = new student[kol_vo_stud + 1];
+            for (int i = 0; i < kol_vo_stud; i++)
+            {
+                temp[i] = this.arr[i];
+            }
+            temp[kol_vo_stud] = new student();
+            temp[kol_vo_stud].set_name(fam);
+            kol_vo_stud++;
+            arr = temp;
+        }
+
+        public void print()
+        {
             Console.Write("Группа \t\t\t" + name_group);
             Console.Write("Кол-во студентов \t" + kol_vo_stud);
             Console.Write("Номер курса \t\t" + nomer_kursa);
             Console.Write("Специализация \t\t" + specializaciya);
-		    if (kol_vo_stud > 0)
-		    {
-			    for (int i = 0; i < kol_vo_stud; i++)
-			    {
-				    Console.Write("----------- Студент № " + i + 1);
-				    arr[i].print();
-			    }
-		    }
-	    }
-	
+            if (kol_vo_stud > 0)
+            {
+                for (int i = 0; i < kol_vo_stud; i++)
+                {
+                    Console.Write("----------- Студент № " + i + 1);
+                    arr[i].print();
+                }
+            }
+        }
+
     }
 
     class Program
     {
-  
+
         String[] fam = new String[] { "Иванов", "Петров", "Сидоров", "Шевченко", "Иващенко", "Смирнов", "Каретников", "Сананов", "Селизнев" };
-        String[] imena = new String[]{ "Петя", "Вася", "Коля", "Игорь", "Сережа", "Вадим", "Сергей", "Дима", "Федя" };
-        String[] adr = new String[]{ "Киев", "Одесса", "Хмельницк", "Поатава", "Харьков", "Севастополь", "Херсон", "Алушта", "Южный" };
-        String[] tel = new String[]{ "098-565-65-56", "059-857-56-98", "111-222-33-44", "99-88-777-333", "578-895-55-66", "321-353-94-23", "11-11-111-111", "222-222-22-22", "333-333-33-33" };
+        String[] imena = new String[] { "Петя", "Вася", "Коля", "Игорь", "Сережа", "Вадим", "Сергей", "Дима", "Федя" };
+        String[] adr = new String[] { "Киев", "Одесса", "Хмельницк", "Поатава", "Харьков", "Севастополь", "Херсон", "Алушта", "Южный" };
+        String[] tel = new String[] { "098-565-65-56", "059-857-56-98", "111-222-33-44", "99-88-777-333", "578-895-55-66", "321-353-94-23", "11-11-111-111", "222-222-22-22", "333-333-33-33" };
         String[] spec = new String[] { "Программисты", "Дизайнеры", "Архитекторы", "Ученые" };
 
         static void Main(string[] args)
