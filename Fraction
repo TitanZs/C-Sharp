@@ -1,102 +1,384 @@
 using System;
-
+using System.Collections;
 namespace Arrays
-{ 
-    class Fraction
+{
+    struct date
     {
-        private double cisl;
-        private double znam;
-        public Fraction(double cisl, double znam)
+        public int day;
+        public int manth;
+        public int year;
+
+        date(int d, int m, int y)
         {
-            this.cisl = cisl;
-            this.znam = znam;
+            day = d;
+            manth = m;
+            year = y;
         }
-        public static Boolean operator true(Fraction ans)
+    }
+    class student : IComparable
+    {
+        private String name_stud;
+        private int age;
+        private int kol_bals_zach;
+        private int kol_bals_kurs;
+        private int kol_bals_ekzamen;
+        private int[] bals_zach;
+        private int[] bals_kurs;
+        private int[] bals_ekzamen;
+        private date dat_reg;
+        private date dat_birth;
+        public String Name
         {
-            if (ans.cisl < ans.znam)
-                return true;
-            else
-                return false;
+            get
+            {
+                return name_stud;
+            }
+            set
+            {
+                name_stud = value;
+            }
+        }
+        public int Age
+        {
+            get
+            {
+                return Age;
+            }
+            set
+            {
+                Age = value;
+            }
         }
 
-        public static Boolean operator false(Fraction ans)
+        public int CompareTo(object obj) // реализация интерфейса
         {
-            if (ans.cisl > ans.znam)
-                return false;
-            else
-                return true;
+            student temp = obj as student;
+            if (this.age > temp.age) return 1;
+            if (this.age < temp.age) return -1;
+            return 0;
         }
-        public static Fraction operator +(Fraction left, Fraction right)
+        virtual public void Passport()
         {
-            return new Fraction(left.cisl  + right.cisl, left.znam + right.znam );
+            Console.WriteLine("Student {0} , age = {1}", name_stud, age);
         }
-        public static Fraction operator +(Fraction left, double val)
+        public student()
+            : this("Noname", 0, 2016, 0, 0)
+        { }
+        public student(String name, int age, int y, int m, int d)
         {
-            return new Fraction(left.cisl + val, left.znam + val);
+            kol_bals_zach = 0;
+            name_stud = name;
+            this.age = age;
+            bals_zach = new int[1];
+            dat_reg = new date();
+            dat_reg.day = d;
+            dat_reg.manth = m;
+            dat_reg.year = y;
+            dat_birth = new date();
+            dat_birth.day = 0;
+            dat_birth.manth = 0;
+            dat_birth.year = 0;
         }
-        public static Fraction operator -(Fraction left, Fraction right)
+        public void SetName(String bal)
         {
-            return new Fraction(left.cisl - right.cisl, left.znam - right.znam);
+            name_stud = bal;
         }
-        public static Fraction operator *(Fraction left, Fraction right)
+        public void SetAge(int val)
         {
-            return new Fraction(left.cisl * right.cisl, left.znam * right.znam);
-        }
-        public static Fraction operator *(Fraction left, int val)
-        {
-            return new Fraction(left.cisl * val, left.znam * val);
-        }
-        public static Fraction operator *(int val, Fraction left)
-        {
-            return new Fraction(left.cisl * val, left.znam * val);
-        }
-        public static Fraction operator /(Fraction left, Fraction right)
-        {
-            return new Fraction(left.cisl / right.cisl, left.znam / right.znam);
-        }
-
-        public static Boolean operator == (Fraction left, Fraction right)
-        {
-            if (left.cisl != right.znam)
-                return false;
-            else
-                return true;
-        }
-        public static Boolean operator !=(Fraction left, Fraction right)
-        {
-            if (left.cisl == right.znam)
-                return false;
-            else
-                return true;
-        }
-        public static Boolean operator >(Fraction left, Fraction right)
-        {
-            if (left.cisl > right.znam)
-                return true;
-            else
-                return false;
-        }
-        public static Boolean operator <(Fraction left, Fraction right)
-        {
-            if (left.cisl < right.znam)
-                return true;
-            else
-                return false;
+            age = val;
         }
 
+        public void add_bals_zach(int bal)
+        {
+            int i;
+            int[] temp = new int[kol_bals_zach + 1];
+            for (i = 0; i < kol_bals_zach; i++)
+                temp[i] = bals_zach[0];
+            temp[i] = bal;
+            bals_zach = temp;
+            kol_bals_zach++;
+        }
+        public void add_bals_kurs(int bal)
+        {
+            int i;
+            int[] temp = new int[kol_bals_kurs + 1];
+            for (i = 0; i < kol_bals_kurs; i++)
+                temp[i] = bals_kurs[0];
+            temp[i] = bal;
+            bals_kurs = temp;
+            kol_bals_kurs++;
+        }
+        public void add_bals_ekzam(int bal)
+        {
+            int i;
+            int[] temp = new int[kol_bals_ekzamen + 1];
+            for (i = 0; i < kol_bals_ekzamen; i++)
+                temp[i] = bals_ekzamen[0];
+            temp[i] = bal;
+            bals_ekzamen = temp;
+            kol_bals_ekzamen++;
+        }
+        public void print()
+        {
+            Console.WriteLine("Name:\t" + name_stud);
+            Console.WriteLine("Age:\t" + age);
+            Console.WriteLine("Data reg: " + dat_reg.year + "-" + dat_reg.manth + "-" + dat_reg.day);
+            Console.WriteLine("Data Birth: " + dat_birth.year + "-" + dat_birth.manth + "-" + dat_birth.day);
+            if (kol_bals_zach > 0)
+            {
+                Console.Write("Bals Zach:\t");
+                for (int i = 0; i < kol_bals_zach; i++)
+                    Console.WriteLine("\t" + bals_zach[i]);
+            }
+            if (kol_bals_zach > 0)
+            {
+                Console.Write("Bals Kurs:\t");
+                for (int i = 0; i < kol_bals_kurs; i++)
+                    Console.WriteLine("\t" + bals_zach[i]);
+            }
+            if (kol_bals_zach > 0)
+            {
+                Console.Write("Bals Ekam:\t");
+                for (int i = 0; i < kol_bals_ekzamen; i++)
+                    Console.WriteLine("\t" + bals_ekzamen[i]);
+            }
 
+        }
+        public class SortByName : IComparer
+        {
+            public int Compare(object ob1, object ob2)
+            {
+                student m1 = (student)ob1;
+                student m2 = (student)ob2;
+                return String.Compare(m1.name_stud, m2.name_stud);
+            }
+        }
+        public class SortByAge : IComparer
+        {
+         int IComparer.Compare(object ob1, object ob2)
+         {
+             student m1 = (student)ob1;
+             student m2 = (student)ob2;
+             if (m1.age > m2.age) return 1;
+             if (m1.age < m2.age) return -1;
+             return 0;
+         }
+     }
+    }
+
+    class group
+    {
+        private student[] arr;
+        private int kol_vo_stud;
+        private String name_group;
+        private int nomer_kursa;
+        private String specializaciya;
+
+        /*
+           Monster[] crowd = new Monster[3];
+
+            crowd[0] = new Monster(50, 50, "Иван");
+            crowd[1] = new Monster(80, 80, "Пётр");
+            crowd[2] = new Monster(40, 10, "Света");
+
+            Console.WriteLine("Сортировка по имени:");
+            Array.Sort(crowd, new Monster.SortByName());
+            foreach (Monster elem in crowd) elem.Passport();
+
+            Console.WriteLine("\n\nСортировка по вооружению:");
+            Array.Sort(crowd, new Monster.SortByAmmo());
+            foreach (Monster elem in crowd) elem.Passport();
+         */
+
+      
+        public void SortByName()
+        {
+            Console.WriteLine("Сортировка по имени:");
+            Array.Sort(arr, new student.SortByName());
+            foreach (student elem in arr) elem.print();
+        }
+
+        public void SortByAge()
+        {
+            Console.WriteLine("Сортировка по возрасту:");
+            Array.Sort(arr, new student.SortByAge  ());
+            foreach (student elem in arr) elem.print();
+        }
+     
+
+        public int kolVoStud
+        {
+            get
+            {
+                return kolVoStud;
+            }
+            set
+            {
+                kolVoStud = value;
+            }
+        }
+        public int NomerKursa
+        {
+            get
+            {
+                return nomer_kursa;
+            }
+            set
+            {
+                nomer_kursa = value;
+            }
+        }
+        public String Specializaciya
+        {
+            get
+            {
+                return specializaciya;
+            }
+            set
+            {
+                specializaciya = value;
+            }
+        }
+        public String NameGroup
+        {
+            get
+            {
+                return name_group;
+            }
+            set
+            {
+                name_group = value;
+            }
+        }
+
+        public group() : this(0, "Нет имени", "Нет имени", 0) { }
+        public group(int kol) : this(kol, "Нет имени", "Нет имени", 0) { }
+        public group(int kol, String nam_grup) : this(kol, nam_grup, "Нет имени", 0) { }
+        public group(int kol, String nam_grup, String special) : this(kol, nam_grup, special, 0) { }
+        public group(int kol, String nam_grup, String special, int nom_kursa)
+        {
+            kol_vo_stud = kol;
+            if (kol > 0)
+            {
+                arr = new student[kol_vo_stud];
+                for (int i = 0; i < kol_vo_stud; i++)
+                {
+                    arr[i] = new student();
+                    arr[i].SetName  ("No Name");
+                }
+            }
+            name_group = nam_grup;
+            nomer_kursa = nom_kursa;
+            specializaciya = special;
+        }
+        public void set_name_group(String nam)
+        {
+            name_group = nam;
+        }
+        public void set_nomer_gruppi(int nam)
+        {
+            nomer_kursa = nam;
+        }
+        public void set_specialization(String nam)
+        {
+            specializaciya = nam;
+        }
+        public void add_stud(String nam, String fam, String sec_name, int age)
+        {
+
+            student[] temp = new student[kol_vo_stud + 1];
+            for (int i = 0; i < kol_vo_stud; i++)
+            {
+                temp[i] = this.arr[i];
+            }
+            temp[kol_vo_stud] = new student();
+            temp[kol_vo_stud].SetName (nam);
+            temp[kol_vo_stud].SetAge (age);
+            kol_vo_stud++;
+            arr = temp;
+        }
+
+        public void print()
+        {
+            Console.Write("Группа \t\t\t" + name_group);
+            Console.Write("Кол-во студентов \t" + kol_vo_stud);
+            Console.Write("Номер курса \t\t" + nomer_kursa);
+            Console.Write("Специализация \t\t" + specializaciya);
+            if (kol_vo_stud > 0)
+            {
+                for (int i = 0; i < kol_vo_stud; i++)
+                {
+                    Console.Write("----------- Студент № " + i + 1);
+                    arr[i].print();
+                }
+            }
+        }
+        public void SearchByName(String str)
+        {
+            for (int i = 0; i < kol_vo_stud; i++)
+            {
+                if (arr[i].Name == str)
+                {
+                    arr[i].print();
+                    break;
+                }
+               
+            }
+        }
+
+        public void SearchByAge(int val)
+        {
+            for (int i = 0; i < kol_vo_stud; i++)
+            {
+                if (arr[i].Age == val)
+                {
+                    arr[i].print();
+                    break;
+                }
+
+            }
+        }
 
     }
+
     class Program
     {
-        static void Main()
+
+     
+        static void Main(string[] args)
         {
-            Fraction f = new Fraction(10, 6);
-            int a = 10;
-            Fraction f1 = f * 2;
-            Fraction f2 = a * f;
-            double d = 1.5;
-            Fraction f3 = f + d;
+           /* student a = new student();
+            a.add_bals_zach(1);
+            a.print();
+            * */
+
+            /*
+            student[] crowd = new student[3];
+
+            crowd[0] = new student("Иванов",15, 2015, 11,05);
+            crowd[1] = new student("Петров", 23, 2010, 12, 14);
+            crowd[2] = new student("Кузин", 10, 2010, 6, 05);
+
+            Array.Sort(crowd);
+
+            foreach (student elem in crowd) elem.Passport();
+            */
+            group new_group = new group();
+            new_group.add_stud("Юрий", "сименов", "юрьевич", 10);
+            new_group.add_stud("Коля", "первов", "перович",9 );
+            new_group.add_stud("Игорь", "иванов", "игоревич", 12);
+            new_group.add_stud("Вася", "сименов", "юрьевич", 8);
+            
+            
+            new_group.SortByName();
+            Console.WriteLine();
+            new_group.SortByAge();
+            
+            Console.WriteLine("Сотировка по имени");
+            new_group.SearchByName("Коля");
+
+            Console.WriteLine("Сотировка по возрасту");
+            new_group.SearchByAge(10);
         }
     }
 }
