@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 namespace Arrays
 {
     struct date
@@ -14,7 +15,7 @@ namespace Arrays
             year = y;
         }
     }
-    class student
+    class student : IComparable
     {
         private String name_stud;
         private int age;
@@ -49,6 +50,17 @@ namespace Arrays
             }
         }
 
+        public int CompareTo(object obj) // реализация интерфейса
+        {
+            student temp = obj as student;
+            if (this.age > temp.age) return 1;
+            if (this.age < temp.age) return -1;
+            return 0;
+        }
+        virtual public void Passport()
+        {
+            Console.WriteLine("Student {0} , age = {1}", name_stud, age);
+        }
         public student()
             : this("Noname", 0, 2016, 0, 0)
         { }
@@ -67,9 +79,13 @@ namespace Arrays
             dat_birth.manth = 0;
             dat_birth.year = 0;
         }
-        public void set_name(String bal)
+        public void SetName(String bal)
         {
             name_stud = bal;
+        }
+        public void SetAge(int val)
+        {
+            age = val;
         }
 
         public void add_bals_zach(int bal)
@@ -126,7 +142,28 @@ namespace Arrays
                 for (int i = 0; i < kol_bals_ekzamen; i++)
                     Console.WriteLine("\t" + bals_ekzamen[i]);
             }
+
         }
+        public class SortByName : IComparer
+        {
+            public int Compare(object ob1, object ob2)
+            {
+                student m1 = (student)ob1;
+                student m2 = (student)ob2;
+                return String.Compare(m1.name_stud, m2.name_stud);
+            }
+        }
+        public class SortByAge : IComparer
+        {
+         int IComparer.Compare(object ob1, object ob2)
+         {
+             student m1 = (student)ob1;
+             student m2 = (student)ob2;
+             if (m1.age > m2.age) return 1;
+             if (m1.age < m2.age) return -1;
+             return 0;
+         }
+     }
     }
 
     class group
@@ -136,6 +173,38 @@ namespace Arrays
         private String name_group;
         private int nomer_kursa;
         private String specializaciya;
+
+        /*
+           Monster[] crowd = new Monster[3];
+
+            crowd[0] = new Monster(50, 50, "Иван");
+            crowd[1] = new Monster(80, 80, "Пётр");
+            crowd[2] = new Monster(40, 10, "Света");
+
+            Console.WriteLine("Сортировка по имени:");
+            Array.Sort(crowd, new Monster.SortByName());
+            foreach (Monster elem in crowd) elem.Passport();
+
+            Console.WriteLine("\n\nСортировка по вооружению:");
+            Array.Sort(crowd, new Monster.SortByAmmo());
+            foreach (Monster elem in crowd) elem.Passport();
+         */
+
+      
+        public void SortByName()
+        {
+            Console.WriteLine("Сортировка по имени:");
+            Array.Sort(arr, new student.SortByName());
+            foreach (student elem in arr) elem.print();
+        }
+
+        public void SortByAge()
+        {
+            Console.WriteLine("Сортировка по возрасту:");
+            Array.Sort(arr, new student.SortByAge  ());
+            foreach (student elem in arr) elem.print();
+        }
+     
 
         public int kolVoStud
         {
@@ -182,7 +251,7 @@ namespace Arrays
             }
         }
 
-        public group() : this(10, "Нет имени", "Нет имени", 0) { }
+        public group() : this(0, "Нет имени", "Нет имени", 0) { }
         public group(int kol) : this(kol, "Нет имени", "Нет имени", 0) { }
         public group(int kol, String nam_grup) : this(kol, nam_grup, "Нет имени", 0) { }
         public group(int kol, String nam_grup, String special) : this(kol, nam_grup, special, 0) { }
@@ -195,7 +264,7 @@ namespace Arrays
                 for (int i = 0; i < kol_vo_stud; i++)
                 {
                     arr[i] = new student();
-                    arr[i].set_name("No Name");
+                    arr[i].SetName  ("No Name");
                 }
             }
             name_group = nam_grup;
@@ -214,7 +283,7 @@ namespace Arrays
         {
             specializaciya = nam;
         }
-        public void add_stud(String nam, String fam, String sec_name)
+        public void add_stud(String nam, String fam, String sec_name, int age)
         {
 
             student[] temp = new student[kol_vo_stud + 1];
@@ -223,7 +292,8 @@ namespace Arrays
                 temp[i] = this.arr[i];
             }
             temp[kol_vo_stud] = new student();
-            temp[kol_vo_stud].set_name(fam);
+            temp[kol_vo_stud].SetName (nam);
+            temp[kol_vo_stud].SetAge (age);
             kol_vo_stud++;
             arr = temp;
         }
@@ -249,17 +319,35 @@ namespace Arrays
     class Program
     {
 
-        String[] fam = new String[] { "Иванов", "Петров", "Сидоров", "Шевченко", "Иващенко", "Смирнов", "Каретников", "Сананов", "Селизнев" };
-        String[] imena = new String[] { "Петя", "Вася", "Коля", "Игорь", "Сережа", "Вадим", "Сергей", "Дима", "Федя" };
-        String[] adr = new String[] { "Киев", "Одесса", "Хмельницк", "Поатава", "Харьков", "Севастополь", "Херсон", "Алушта", "Южный" };
-        String[] tel = new String[] { "098-565-65-56", "059-857-56-98", "111-222-33-44", "99-88-777-333", "578-895-55-66", "321-353-94-23", "11-11-111-111", "222-222-22-22", "333-333-33-33" };
-        String[] spec = new String[] { "Программисты", "Дизайнеры", "Архитекторы", "Ученые" };
-
+     
         static void Main(string[] args)
         {
-            student a = new student();
+           /* student a = new student();
             a.add_bals_zach(1);
             a.print();
+            * */
+
+            /*
+            student[] crowd = new student[3];
+
+            crowd[0] = new student("Иванов",15, 2015, 11,05);
+            crowd[1] = new student("Петров", 23, 2010, 12, 14);
+            crowd[2] = new student("Кузин", 10, 2010, 6, 05);
+
+            Array.Sort(crowd); // сортировка стала возможной!
+
+            foreach (student elem in crowd) elem.Passport();
+            */
+            group new_group = new group();
+            new_group.add_stud("Юрий", "сименов", "юрьевич", 10);
+            new_group.add_stud("Коля", "первов", "перович",9 );
+            new_group.add_stud("Игорь", "иванов", "игоревич", 12);
+            new_group.add_stud("Вася", "сименов", "юрьевич", 8);
+            
+            
+            new_group.SortByName();
+            Console.WriteLine();
+            new_group.SortByAge();
         }
     }
 }
