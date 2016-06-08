@@ -313,6 +313,31 @@ namespace Arrays
                 }
             }
         }
+        public void SearchByName(String str)
+        {
+            for (int i = 0; i < kol_vo_stud; i++)
+            {
+                if (arr[i].Name == str)
+                {
+                    arr[i].print();
+                    break;
+                }
+               
+            }
+        }
+
+        public void SearchByAge(int val)
+        {
+            for (int i = 0; i < kol_vo_stud; i++)
+            {
+                if (arr[i].Age == val)
+                {
+                    arr[i].print();
+                    break;
+                }
+
+            }
+        }
 
     }
 
@@ -334,7 +359,7 @@ namespace Arrays
             crowd[1] = new student("Петров", 23, 2010, 12, 14);
             crowd[2] = new student("Кузин", 10, 2010, 6, 05);
 
-            Array.Sort(crowd); // сортировка стала возможной!
+            Array.Sort(crowd);
 
             foreach (student elem in crowd) elem.Passport();
             */
@@ -348,6 +373,12 @@ namespace Arrays
             new_group.SortByName();
             Console.WriteLine();
             new_group.SortByAge();
+            
+            Console.WriteLine("Сотировка по имени");
+            new_group.SearchByName("Коля");
+
+            Console.WriteLine("Сотировка по возрасту");
+            new_group.SearchByAge(10);
         }
     }
 }
