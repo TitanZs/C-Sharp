@@ -27,6 +27,53 @@ namespace Arrays
         private int[] bals_ekzamen;
         private date dat_reg;
         private date dat_birth;
+
+        public int KolBalsKurs
+        {
+            get
+            {
+                return kol_bals_kurs;
+            }
+            set
+            {
+                kol_bals_kurs = value;
+            }
+        }
+        public int KolBalsZach
+        {
+            get
+            {
+                return kol_bals_zach;
+            }
+            set
+            {
+                kol_bals_zach = value;
+            }
+        }
+
+        public date DataBirth
+        {
+            get
+            {
+                return dat_birth;
+            }
+            set
+            {
+                dat_birth = value;
+            }
+        }
+        public date DataRegistred
+        {
+            get
+            {
+                return dat_reg;
+            }
+            set
+            {
+                dat_reg = value;
+            }
+        }
+
         public String Name
         {
             get
@@ -42,15 +89,15 @@ namespace Arrays
         {
             get
             {
-                return Age;
+                return age;
             }
             set
             {
-                Age = value;
+                age = value;
             }
         }
 
-        public int CompareTo(object obj) // реализация интерфейса
+        public int CompareTo(object obj)
         {
             Student temp = obj as Student;
             if (this.age > temp.age) return 1;
@@ -59,6 +106,7 @@ namespace Arrays
         }
         virtual public void Passport()
         {
+
             Console.WriteLine("Student {0} , age = {1}", name_stud, age);
         }
         public Student()
@@ -165,28 +213,49 @@ namespace Arrays
          }
      }
     }
-    class Group
+
+
+    class Group : IEnumerable, IEnumerator
     {
         private Student[] arr;
         private int kol_vo_stud;
         private String name_group;
         private int nomer_kursa;
         private String specializaciya;
-        /*
-           Monster[] crowd = new Monster[3];
+        private int index;
 
-            crowd[0] = new Monster(50, 50, "Иван");
-            crowd[1] = new Monster(80, 80, "Пётр");
-            crowd[2] = new Monster(40, 10, "Света");
+        public IEnumerator GetEnumerator()
+        {
+            return this;
+        }
 
-            Console.WriteLine("Сортировка по имени:");
-            Array.Sort(crowd, new Monster.SortByName());
-            foreach (Monster elem in crowd) elem.Passport();
+        // Реализуем интерфейс IEnumerator
+        public bool MoveNext()
+        {
+            if (index == kol_vo_stud - 1)
+            {
+                Reset();
+                return false;
+            }
 
-            Console.WriteLine("\n\nСортировка по вооружению:");
-            Array.Sort(crowd, new Monster.SortByAmmo());
-            foreach (Monster elem in crowd) elem.Passport();
-         */      
+            index++;
+            return true;
+        }
+
+        public void Reset()
+        {
+            index = -1;
+        }
+
+        public object Current
+        {
+            get
+            {
+                return arr[index];
+            }
+        }
+
+
         public void SortByName()
         {
             Console.WriteLine("Сортировка по имени:");
@@ -334,32 +403,40 @@ namespace Arrays
     {     
         static void Main(string[] args)
         {
-           /* student a = new student();
-            a.add_bals_zach(1);
-            a.print();
-            
-            student[] crowd = new student[3];
-            crowd[0] = new student("Иванов",15, 2015, 11,05);
-            crowd[1] = new student("Петров", 23, 2010, 12, 14);
-            crowd[2] = new student("Кузин", 10, 2010, 6, 05);
-            Array.Sort(crowd);
-            foreach (student elem in crowd) elem.Passport();
-            */
+            Student a = new Student();
+            a.AddBalsEkzam(1);
+            //a.Print();
+
+            Student[] crowd = new Student[3];
+            crowd[0] = new Student("Иванов", 15, 2015, 11, 05);
+            crowd[1] = new Student("Петров", 23, 2010, 12, 14);
+            crowd[2] = new Student("Кузин", 10, 2010, 6, 05);
+            //Array.Sort(crowd);
+            foreach (Student elem in crowd)
+            {
+                Console.WriteLine(elem.Name + " " + elem.Age + " лет., " + elem.KolBalsKurs + " оценок по курсовым, " + elem.KolBalsZach + " оценок по зачетам ");
+                Console.WriteLine(elem.GetType());
+   
+            }
+            /*
             Group new_group = new Group();
             new_group.AddStud("Юрий", "сименов", "юрьевич", 10);
             new_group.AddStud("Коля", "первов", "перович",9 );
             new_group.AddStud("Игорь", "иванов", "игоревич", 12);
-            new_group.AddStud("Вася", "сименов", "юрьевич", 8);                        
-            new_group.SortByName();
-            
-            Console.WriteLine();
-            new_group.SortByAge();            
-            
-            Console.WriteLine("Сотировка по имени");
-            new_group.SearchByName("Коля");
+            new_group.AddStud("Вася", "сименов", "юрьевич", 8);
 
-            Console.WriteLine("Сотировка по возрасту");
-            new_group.SearchByAge(10);
+          */
+
+            //new_group.SortByName();
+            
+            //Console.WriteLine();
+            //new_group.SortByAge();            
+            
+            //Console.WriteLine("Сотировка по имени");
+            //new_group.SearchByName("Коля");
+
+            //Console.WriteLine("Сотировка по возрасту");
+            //new_group.SearchByAge(10);
         }
     }
 }
