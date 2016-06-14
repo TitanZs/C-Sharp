@@ -1,0 +1,265 @@
+public class Node
+{
+    private object _Data;
+    private Node _Next;
+    private Node _Prev;
+    public object Value
+    {
+        get { return _Data; }
+        set { _Data = value; }
+    }
+    public Node(object Data)
+    {
+        this._Data = Data;
+    }
+    public Node Next
+    {
+        get { return this._Next; }
+        set { this._Next = value; }
+    }
+    public Node Prev
+    {
+        get { return this._Prev; }
+        set { this._Prev = value; }
+    }
+}
+class Doubly_Linked_List : IEnumerable, IEnumerator
+{
+    private Node First;
+    private Node Curr;
+    private Node Last;
+    private uint size;
+    private int index;
+
+    public IEnumerator GetEnumerator()
+    {
+        return this;
+    }
+
+    // Реализуем интерфейс IEnumerator
+    public bool MoveNext()
+    {
+        if (index == size - 1)
+        {
+            Reset();
+            return false;
+        }
+
+        index++;
+        return true;
+    }
+
+    public void Reset()
+    {
+        index = -1;
+    }
+
+    public object Current
+    {
+        get
+        {
+            return First;
+        }
+    }
+
+
+    public Doubly_Linked_List()
+    {
+        size = 0;
+        First = Curr = Last = null;
+    }
+
+    public bool isEmpty 
+    {
+        get
+        {
+            return size == 0;
+        }
+    }
+
+    public void Insert_Index(object newElement, uint index) 
+    {
+        if (index == 1) 
+        {
+            Push_Front(newElement);
+        }
+        else if (index == size) 
+        {
+            Push_Back(newElement);
+        }
+        else
+        {
+            uint count = 1;
+            Curr = First;
+            while (Curr != null && count != index)
+            {
+                Curr = Curr.Next;
+                count++;
+            }
+            Node newNode = new Node(newElement);
+            Curr.Prev.Next = newNode;
+            newNode.Prev = Curr.Prev;
+            Curr.Prev = newNode;
+            newNode.Next = Curr;
+        }
+    }
+
+    public void Push_Front(object newElement)
+    {
+        Node newNode = new Node(newElement);
+        if (First == null)
+        {
+            First = Last = newNode;
+        }
+        else
+        {
+            newNode.Next = First;
+            First = newNode; 
+            newNode.Next.Prev = First;
+        }
+        Count++;
+    }
+
+    public Node Pop_Front()
+    {
+        if (First == null)
+        {
+            throw new InvalidOperationException();
+        }
+        else
+        {
+            Node temp = First;
+            if (First.Next != null)
+            {
+                First.Next.Prev = null;
+            }
+            First = First.Next;
+            Count--;
+            return temp;
+        }
+    }
+
+    public void Push_Back(object newElement)
+    {
+        Node newNode = new Node(newElement);
+
+        if (First == null)
+        {
+            First = Last = newNode;
+        }
+        else
+        {
+            Last.Next = newNode;
+            newNode.Prev = Last;
+            Last = newNode;
+        }
+        Count++;
+    }
+
+    public Node Pop_Back()
+    {
+        if (Last == null)
+        {
+            throw new InvalidOperationException();
+        }
+        else
+        {
+            Node temp = Last;
+            if (Last.Prev != null)
+            {
+                Last.Prev.Next = null;
+            }
+            Last = Last.Prev;
+            Count--;
+            return temp;
+        }
+    }
+
+    public void ClearList() 
+    {
+        while (!isEmpty)
+        {
+            Pop_Front();
+        }
+    }
+
+    public uint Count 
+    {
+        get { return size; }
+        set { size = value; }
+    }
+
+    public void Display()
+    {
+     
+        Curr = First;
+        uint count = 1;
+        while (Curr != null)
+        {
+            Console.WriteLine("Elem " + count.ToString() + " : " + Curr.Value.ToString());
+            count++;
+            Curr = Curr.Next;
+        }
+    }
+
+    public void ReverseDisplay() 
+    {
+      
+        Curr = Last;
+        uint count = 1;
+        while (Curr != null)
+        {
+            Console.WriteLine("Elem " + count.ToString() + " : " + Curr.Value.ToString());
+            count++;
+            Curr = Curr.Prev;
+        }
+    }
+
+    public void DeleteElement(uint index)
+    { 
+        if (index == 1)
+        {
+            Pop_Front();
+        }
+        else if (index == size)
+        {
+            Pop_Back();
+        }
+        else
+        {
+            uint count = 1;
+            Curr = First;
+            while (Curr != null && count != index)
+            {
+                Curr = Curr.Next;
+                count++;
+            }
+            Curr.Prev.Next = Curr.Next;
+            Curr.Next.Prev = Curr.Prev;
+        }
+    }
+
+    public Node FindNode(object Data) 
+    {
+        Curr = First;
+        while (Curr != null)
+        {
+            Curr = Curr.Next;
+        }
+        return Curr;
+    }
+
+    public uint GetIndex(object Data) 
+    {
+        Curr = First;
+        uint index = 1;
+        while (Curr != null)
+        {
+            Curr = Curr.Next;
+            index++;
+        }
+        return index;
+
+    }
+
+}
