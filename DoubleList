@@ -1,3 +1,4 @@
+
 public class Node
 {
     private object _Data;
@@ -23,7 +24,7 @@ public class Node
         set { this._Prev = value; }
     }
 }
-class Doubly_Linked_List : IEnumerable, IEnumerator
+class DoublyLinkedList : IEnumerable, IEnumerator
 {
     private Node First;
     private Node Curr;
@@ -35,8 +36,6 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
     {
         return this;
     }
-
-    // Реализуем интерфейс IEnumerator
     public bool MoveNext()
     {
         if (index == size - 1)
@@ -44,16 +43,13 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             Reset();
             return false;
         }
-
         index++;
         return true;
     }
-
     public void Reset()
     {
         index = -1;
     }
-
     public object Current
     {
         get
@@ -61,31 +57,27 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             return First;
         }
     }
-
-
-    public Doubly_Linked_List()
+    public DoublyLinkedList()
     {
         size = 0;
         First = Curr = Last = null;
     }
-
-    public bool isEmpty 
+    public bool IsEmpty
     {
         get
         {
             return size == 0;
         }
     }
-
-    public void Insert_Index(object newElement, uint index) 
+    public void InsertIndex(object newElement, uint index)
     {
-        if (index == 1) 
+        if (index == 1)
         {
-            Push_Front(newElement);
+            PushFront(newElement);
         }
-        else if (index == size) 
+        else if (index == size)
         {
-            Push_Back(newElement);
+            PushBack(newElement);
         }
         else
         {
@@ -103,8 +95,7 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             newNode.Next = Curr;
         }
     }
-
-    public void Push_Front(object newElement)
+    public void PushFront(object newElement)
     {
         Node newNode = new Node(newElement);
         if (First == null)
@@ -114,20 +105,14 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
         else
         {
             newNode.Next = First;
-            First = newNode; 
+            First = newNode;
             newNode.Next.Prev = First;
         }
         Count++;
     }
-
-    public Node Pop_Front()
+    public Node PopFront()
     {
-        if (First == null)
-        {
-            throw new InvalidOperationException();
-        }
-        else
-        {
+     
             Node temp = First;
             if (First.Next != null)
             {
@@ -136,10 +121,9 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             First = First.Next;
             Count--;
             return temp;
-        }
+        
     }
-
-    public void Push_Back(object newElement)
+    public void PushBack(object newElement)
     {
         Node newNode = new Node(newElement);
 
@@ -155,15 +139,9 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
         }
         Count++;
     }
-
-    public Node Pop_Back()
+    public Node PopBack()
     {
-        if (Last == null)
-        {
-            throw new InvalidOperationException();
-        }
-        else
-        {
+      
             Node temp = Last;
             if (Last.Prev != null)
             {
@@ -172,26 +150,23 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             Last = Last.Prev;
             Count--;
             return temp;
-        }
+        
     }
-
-    public void ClearList() 
+    public void ClearList()
     {
-        while (!isEmpty)
+        while (!IsEmpty)
         {
-            Pop_Front();
+            PopFront();
         }
     }
-
-    public uint Count 
+    public uint Count
     {
         get { return size; }
         set { size = value; }
     }
-
     public void Display()
     {
-     
+
         Curr = First;
         uint count = 1;
         while (Curr != null)
@@ -201,10 +176,8 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             Curr = Curr.Next;
         }
     }
-
-    public void ReverseDisplay() 
+    public void ReverseDisplay()
     {
-      
         Curr = Last;
         uint count = 1;
         while (Curr != null)
@@ -214,16 +187,15 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             Curr = Curr.Prev;
         }
     }
-
     public void DeleteElement(uint index)
-    { 
+    {
         if (index == 1)
         {
-            Pop_Front();
+            PopFront();
         }
         else if (index == size)
         {
-            Pop_Back();
+            PopBack();
         }
         else
         {
@@ -238,8 +210,7 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             Curr.Next.Prev = Curr.Prev;
         }
     }
-
-    public Node FindNode(object Data) 
+    public Node FindNode(object Data)
     {
         Curr = First;
         while (Curr != null)
@@ -248,8 +219,7 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
         }
         return Curr;
     }
-
-    public uint GetIndex(object Data) 
+    public uint GetIndex(object Data)
     {
         Curr = First;
         uint index = 1;
@@ -259,7 +229,5 @@ class Doubly_Linked_List : IEnumerable, IEnumerator
             index++;
         }
         return index;
-
     }
-
 }
