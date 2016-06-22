@@ -2,6 +2,13 @@ using System;
 using System.Collections;
 namespace Arrays
 {
+
+
+
+
+
+
+
     struct date
     {
         public int day;
@@ -17,6 +24,22 @@ namespace Arrays
     }
     class Student : IComparable
     {
+
+        public int Current
+        {
+            get;
+            private set;
+        }
+
+        private int step;
+
+        public bool MoveNext()
+        {
+            if (step >= 5) return false;
+            Current = step++;
+            return true;
+        }
+
         private String name_stud;
         private int age;
         private int kol_bals_zach;
@@ -203,17 +226,23 @@ namespace Arrays
         }
         public class SortByAge : IComparer
         {
-         int IComparer.Compare(object ob1, object ob2)
-         {
-             Student m1 = (Student)ob1;
-             Student m2 = (Student)ob2;
-             if (m1.age > m2.age) return 1;
-             if (m1.age < m2.age) return -1;
-             return 0;
-         }
-     }
+            int IComparer.Compare(object ob1, object ob2)
+            {
+                Student m1 = (Student)ob1;
+                Student m2 = (Student)ob2;
+                if (m1.age > m2.age) return 1;
+                if (m1.age < m2.age) return -1;
+                return 0;
+            }
+        }
+        public Student GetEnumerator()
+        {
+            return new Student();
+        }
     }
 
+
+    
 
     class Group : IEnumerable, IEnumerator
     {
@@ -326,7 +355,7 @@ namespace Arrays
                 for (int i = 0; i < kol_vo_stud; i++)
                 {
                     arr[i] = new Student();
-                    arr[i].SetName  ("No Name");
+                    arr[i].SetName("No Name");
                 }
             }
             name_group = nam_grup;
@@ -354,8 +383,8 @@ namespace Arrays
                 temp[i] = this.arr[i];
             }
             temp[kol_vo_stud] = new Student();
-            temp[kol_vo_stud].SetName (nam);
-            temp[kol_vo_stud].SetAge (age);
+            temp[kol_vo_stud].SetName(nam);
+            temp[kol_vo_stud].SetAge(age);
             kol_vo_stud++;
             arr = temp;
         }
@@ -384,7 +413,7 @@ namespace Arrays
                     arr[i].Print();
                     break;
                 }
-               
+
             }
         }
         public void SearchByAge(int val)
@@ -400,24 +429,34 @@ namespace Arrays
         }
     }
     class Program
-    {     
+    {
         static void Main(string[] args)
         {
             Student a = new Student();
-            a.AddBalsEkzam(1);
+         //   a.AddBalsEkzam(1);
             //a.Print();
 
-            Student[] crowd = new Student[3];
-            crowd[0] = new Student("Иванов", 15, 2015, 11, 05);
-            crowd[1] = new Student("Петров", 23, 2010, 12, 14);
-            crowd[2] = new Student("Кузин", 10, 2010, 6, 05);
-            //Array.Sort(crowd);
+         //   Student[] crowd = new Student[3];
+        //    crowd[0] = new Student("Иванов", 15, 2015, 11, 05);
+        //    crowd[1] = new Student("Петров", 23, 2010, 12, 14);
+        //    crowd[2] = new Student("Кузин", 10, 2010, 6, 05);
+           
+     
+            Student s = new Student();
+            foreach (var x in s)
+            {
+                Console.WriteLine(x); // на экране пара "идентификатор - значение"
+            }
+
+            /*
+
             foreach (Student elem in crowd)
             {
                 Console.WriteLine(elem.Name + " " + elem.Age + " лет., " + elem.KolBalsKurs + " оценок по курсовым, " + elem.KolBalsZach + " оценок по зачетам ");
                 Console.WriteLine(elem.GetType());
-   
+
             }
+             * */
             /*
             Group new_group = new Group();
             new_group.AddStud("Юрий", "сименов", "юрьевич", 10);
@@ -428,10 +467,10 @@ namespace Arrays
           */
 
             //new_group.SortByName();
-            
+
             //Console.WriteLine();
             //new_group.SortByAge();            
-            
+
             //Console.WriteLine("Сотировка по имени");
             //new_group.SearchByName("Коля");
 
