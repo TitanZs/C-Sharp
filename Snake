@@ -1,0 +1,68 @@
+using System;
+
+namespace Events
+{
+    class ClassCounter  // класс-издатель, в котором производится счёт
+    {
+        public delegate void MethodContainer(); // делегат задаёт сигнатуру методов-обработчиков события
+
+        // событие OnCount c типом делегата MethodContainer
+        public event MethodContainer onCount; // название события
+
+        public void Count()
+        {
+           
+             Console.WriteLine("\n");
+             if (onCount != null) onCount(); // генерация события классом-издателем
+                
+            
+        }
+        public void DelByName(MethodContainer str)
+        {
+            onCount -= str ;
+        }
+    }
+
+    class SnakeEat 
+    {
+        public void Message()
+        {
+            Console.WriteLine("Змейка съела яблоко\n");
+        }
+    }
+
+    class SnakeToWall 
+    {
+        public void Message()
+        {
+            Console.WriteLine("Змейка ударилась в стенку\n");
+        }
+    }
+
+    class SnakeEatTail // ещё один класс-подписчик
+    {
+        public void Message()
+        {
+            Console.WriteLine("Змейка врезалась в себя\n");
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ClassCounter c = new ClassCounter();
+            SnakeToWall Wall = new SnakeToWall();
+            SnakeEat Eat = new SnakeEat();
+            SnakeEatTail Tail = new SnakeEatTail();
+
+            c.onCount += Wall.Message;
+           // c.DelByName(h1.Message);
+            c.onCount += Eat.Message;
+            //c.DelByName(h2.Message);
+            c.onCount += Tail.Message;
+            c.Count();
+
+        }
+    }
+}
