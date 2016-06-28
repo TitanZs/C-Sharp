@@ -1,0 +1,63 @@
+using System;
+
+namespace Events
+{
+    class ClassCounter  // класс-издатель, в котором производится счёт
+    {
+        public delegate void MethodContainer(); // делегат задаёт сигнатуру методов-обработчиков события
+
+        // событие OnCount c типом делегата MethodContainer
+        public event MethodContainer onCount; // название события
+
+        public void Count()
+        {
+            for (int i = 0; i <= 15; i++)
+            {
+                Console.Write(i + ", ");
+                if (i == 10)
+                {
+                    Console.WriteLine("\n");
+        
+                    if (onCount != null) onCount(); // генерация события классом-издателем
+                }
+            }
+        }
+        public void DelByName(MethodContainer str)
+        {
+            onCount -= str ;
+        }
+    }
+
+    class SomeHandler // класс-подписчик, реагирующий на событие (когда счёт равен 71) записью строки в консоль
+    {
+        public void Message()
+        {
+            Console.WriteLine("Пора действовать, ведь уже 10!");
+        }
+    }
+
+    class AnotherHandler // ещё один класс-подписчик
+    {
+        public void Message()
+        {
+            Console.WriteLine("Точно, уже 10!\n");
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ClassCounter c = new ClassCounter();
+            SomeHandler h1 = new SomeHandler();
+            AnotherHandler h2 = new AnotherHandler();
+
+            c.onCount += h1.Message;
+            c.DelByName(h1.Message);
+            c.onCount += h2.Message;
+            c.DelByName(h2.Message);
+            c.Count();
+
+        }
+    }
+}
