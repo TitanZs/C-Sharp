@@ -5,26 +5,62 @@ namespace Events
     class ClassCounter  // класс-издатель, в котором производится счёт
     {
         public delegate void MethodContainer(); // делегат задаёт сигнатуру методов-обработчиков события
+        public delegate void UI();
 
         // событие OnCount c типом делегата MethodContainer
         public event MethodContainer onCount; // название события
 
+        UI[] evnt = new UI[5];
+        public event UI UserEvent
+        {
+            // Используем аксессоры событийтебе его завести? 
+
+            add
+            {
+                evnt[0] += value;
+            }
+
+            remove
+            {
+                evnt[0] -= value;
+            }
+        }
+
         public void Count()
         {
+           
             for (int i = 0; i <= 15; i++)
             {
                 Console.Write(i + ", ");
                 if (i == 10)
                 {
                     Console.WriteLine("\n");
-        
+
                     if (onCount != null) onCount(); // генерация события классом-издателем
                 }
             }
         }
+        public void CountNew()
+        {
+           
+                evnt[0]();  // генерация события классом-издателем
+        }
         public void DelByName(MethodContainer str)
         {
-            onCount -= str ;
+            onCount -= str;
+        }
+        public void DelByStr(String str)
+        {
+            //String temp = new String(evnt[1].Target);
+         
+                //  if (evnt[i].Target.GetType().Name != str)
+                if (evnt[0].Target.GetType().Name == str)
+                {
+                    Console.WriteLine(evnt[0].Target.GetType().Name);
+                    evnt[0] -= evnt[0];
+                    
+                }
+              
         }
     }
 
@@ -52,11 +88,17 @@ namespace Events
             SomeHandler h1 = new SomeHandler();
             AnotherHandler h2 = new AnotherHandler();
 
-            c.onCount += h1.Message;
-            c.DelByName(h1.Message);
-            c.onCount += h2.Message;
-            c.DelByName(h2.Message);
-            c.Count();
+            c.UserEvent += h1.Message;
+            c.UserEvent += h2.Message;
+
+            c.DelByStr("AnotherHandler");
+            c.CountNew();
+
+           // c.onCount += h1.Message;
+           // c.DelByName(h1.Message);
+           // c.onCount += h2.Message;
+           // c.DelByName(h2.Message);
+           // c.Count();
 
         }
     }
