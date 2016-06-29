@@ -1,0 +1,198 @@
+using System;
+using System.Threading;
+   
+class Hospital
+{
+    
+    int kol_vo_kab = 5;
+    int kol_vo_vrach = 4;
+    int kol_vo_ocher = 10;
+    static public Random room = new Random();
+    static public Random doc = new Random();
+    static public Random peoples = new Random();
+    static public Random type_peoples = new Random();
+
+
+    static public int size_rooms;
+    static public int[,][] Rooms;
+
+    public int GetRooms()
+    {
+        return size_rooms;
+    }
+    public int GetOch(int val)
+    {
+        return Rooms[val, 1].Length;
+    }
+
+    public Hospital()
+    {
+        size_rooms = room.Next(3, kol_vo_kab+1);
+        Rooms = new int[size_rooms,2][];
+        for (int i = 0; i < size_rooms; i++)
+        {
+            Rooms[i, 0] = new int[doc.Next(1, kol_vo_vrach+1)];
+            Rooms[i, 1] = new int[0];
+        }
+      
+    }
+    public void Print()
+    {
+        Console.Clear();
+        for (int i = 0; i < size_rooms; i++)
+        {
+            
+            Console.Write("Кабинет № " + (i + 1) + " Врачей - " + Rooms[i, 0].Length + " Очередь " + Rooms[i, 1].Length + "\n");
+            for (int j = 0; j < Rooms[i, 1].Length; j++)
+                Console.Write("\t Пациент - " + Convert(Rooms[i, 1][j]) + " \n");
+        }
+    }
+    public void DeletOchered()
+    {
+        for (int i = 0; i < size_rooms; i++)
+        {
+            Rooms[i, 1] = new int[0];
+        }
+    }
+    public void PrinyatPacienta(int val)
+    {
+        int[] temp = new int[Rooms[val, 1].Length - 1];
+            int j = 0;
+            {
+                for (; j < Rooms[val, 1].Length-1; j++)
+                {
+                    temp[j] = Rooms[val, 1][j+1];
+                }
+            }
+            Rooms[val, 1] = temp;
+        
+    }
+    public void AddPacient(int kol)
+    {
+        for (; kol > 0;)
+        {
+            for (int i = 0; i < size_rooms; i++)
+            {
+                if (Rooms[i, 1].Length < kol_vo_ocher - 2)
+                {
+                    int[] temp = new int[Rooms[i, 1].Length + 1];
+                    int j = 0;
+                    if (Rooms[i, 1].Length == 0)
+                    {
+                        int te = type_peoples.Next(1, 7);
+                        temp[j] = te;
+                    }
+                    else
+                    {
+                        for (; j < Rooms[i, 1].Length; j++)
+                        {
+                            temp[j] = Rooms[i, 1][j];
+                        }
+                        int te = type_peoples.Next(1, 7);
+                        temp[j] = te;              
+                    }
+                    Rooms[i, 1] = temp;
+                    kol--;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+        }
+    }
+
+    public string Convert(int val)
+    {
+        switch (val)
+        {
+            case 1 :
+                return "C_переломом";
+            case 2:
+                return "Инвалид";
+            case 3:
+                return "Пенсионер";
+            case 4:
+                return "Беременная";
+            case 5:
+                return "С острой болью";
+            case 6:
+                return "Ветеран";
+            case 7:
+                return "Обычный";
+            default:
+                return "Нет";
+        }
+    }
+   
+
+}
+
+class MyClinik
+{
+    static public int speed_world = 200;
+    static public Random priem = new Random();
+    static int hour = 0;
+    static int day = 0;
+    static int second  = 1000;
+    static public Hospital Hos;
+    static void Main() // приоритетный первичный поток
+    {
+       
+        Hos = new Hospital();
+        Hos.Print();
+
+        Thread t = new Thread(NewPacient); // создание приоритетного вторичного потока
+        Thread t1 = new Thread(Obrabotat); // создание приоритетного вторичного потока
+        t.IsBackground = true;
+        t1.IsBackground = true; 
+        t.Start();
+        t1.Start(); 
+
+        for (; ; )
+        {
+            Thread.Sleep(speed_world);
+            hour++;
+            if (hour == 24)
+            {
+                day++;
+                hour = 0;
+            }
+            if (day == 7)
+            {
+                day = 0;
+            }
+            Hos.Print();
+            Console.Title  = "Час - " + hour + " День - " + day;
+        }
+    }
+
+    static void NewPacient()
+    {
+        for (; ;)
+        {
+            Thread.Sleep(speed_world);
+            if (hour > 5 && hour  < 18)
+                Hos.AddPacient(1);
+            if (hour > 22)
+                Hos.DeletOchered();
+        }
+    }
+    static void Obrabotat()
+    {
+        for (; ; )
+        {
+            for (int i = 0; i < Hos.GetRooms(); i++)
+            {
+                Thread.Sleep(priem.Next(100, 500));
+                if (Hos.GetOch(i) > 0)
+                {
+                 if(hour > 8 && hour < 22)
+                    Hos.PrinyatPacienta(i);
+                }
+            }                   
+        }
+    }
+}
