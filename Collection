@@ -1,0 +1,273 @@
+
+
+namespace iEnumerable
+{
+    class NodeList<T>
+    {
+        public NodeList(T value)  {Value = value;}
+        public NodeList(T value, NodeList<T> next)
+        {
+            Value = value;
+            Next = next;
+        }
+        public T Value { get; set; }
+        public NodeList<T> Next { get; set; }
+        public NodeList<T> Previous { get; set; }
+
+    }
+    internal class DBList<T> : IEnumerable<T>, IEnumerator
+    {
+        private NodeList<T> head;
+        private NodeList<T> tail;
+        private int Count { get; set; }
+        public NodeList<T> Head {get{return head;}}
+        public NodeList<T> Tail {get{return tail;}}
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0) throw new ArgumentOutOfRangeException();
+                NodeList<T> current = head;
+                for (int i = 0; i < index; i++)
+                {
+                    if (current.Next == null)
+                        throw new ArgumentOutOfRangeException();
+                    current = current.Next;
+                }
+                return current.Value;
+            }
+        }
+        private bool IsEmpty{get {return head == null;}}
+        public void PushFront(T value)
+        {
+            NodeList<T> node = new NodeList<T>(value);
+            NodeList<T> temp = head;
+            head = node;
+            head.Next = node;
+            head.Next = temp;
+            if (Count == 0)
+                tail = head;
+            else         
+                temp.Previous = head;
+            Count++;
+        }
+        public void PushTail(T value)
+        {
+            NodeList<T> node = new NodeList<T>(value);
+            if (Count == 0)
+                head = node;
+            else
+            {
+                tail.Next = node;
+                node.Previous = tail;
+            }
+            tail = node;
+            Count++;
+        }
+        public void Insert(T value, int index)
+        {
+            if (index > Count || index < 0)
+                throw new ArgumentOutOfRangeException();
+            if (index == 0)
+                PushFront(value);
+            else if (index == Count)
+                PushTail(value);
+            else
+            {
+                NodeList<T> currentNode = head;
+                for (int i = 0; i < index - 1; i++)
+                    currentNode = currentNode.Next;
+                NodeList<T> node = new NodeList<T>(value, currentNode.Next);
+                node.Next = currentNode.Next;
+                currentNode.Next = node;
+                Count++;
+            }
+        }
+
+        public T RemoveAt(int index)
+        {
+            if (index > Count || index < 0)
+                throw new ArgumentOutOfRangeException();
+            T removedData;
+            if (index == 0)
+                removedData = RemoveFirst();
+            else if (index == (Count - 1))
+                removedData = RemoveLast();
+            else
+            {
+                NodeList<T> current = head;
+                for (int i = 0; i < index - 1; i++)
+                {
+                    current = current.Next;
+                }
+                removedData = current.Value;
+                current.Next = current.Next.Next;
+                Count--;
+            }
+            return removedData;
+
+        }
+        public void Remove(T value)
+        {
+            NodeList<T> previous = null;
+            NodeList<T> current = head;
+            while (current != null)
+            {
+                if (current.Value.Equals(value))
+                {
+                    if (previous != null)
+                    {
+                        previous.Next = current.Next;
+                        if (current.Next == null)                      
+                            tail = previous;
+                        else
+                            current.Next.Previous = previous;
+                        Count--;
+                    }
+                    else
+                        RemoveFirst();
+                }
+                previous = current;
+                current = current.Next;
+            }
+        }
+
+        public T RemoveLast()
+        {
+            T removedData = tail.Value;
+            switch (Count)
+            {
+                case 0:
+                    return removedData;
+                case 1:
+                    head = tail = null;
+                    break;
+                default:
+                    tail.Previous.Next = null;
+                    tail = tail.Previous;
+                    break;
+            }
+            Count--;
+            return removedData;
+        }
+
+        public T RemoveFirst()
+        {
+            T removedData = head.Value;
+            if (Count != 0)
+            {
+                head = head.Next;
+                Count--;
+                if (Count == 0)
+                    tail = null;
+                else
+                    head.Previous = null;
+            }
+            Count--;
+            return removedData;
+        }
+
+
+      
+
+
+        public int FindIdByElement(T value)
+        {
+            NodeList<T> current = head;
+            for (int i = 0; i < Count; i++)
+            {
+                if (current.Value.Equals(value))
+                    Console.WriteLine("Поиск нужного элемента # " + i);
+                current = current.Next;
+            }
+
+            return -1;
+        }
+
+        public bool Contains(T item)
+        {
+            NodeList<T> current = head;
+            while (current != null)
+            {
+                if (current.Value.Equals(item))
+                    return true;
+                current = current.Next;
+            }
+
+            return false;
+        }
+        public void Replace(T oldItem, T newItem) 
+        {
+            NodeList<T> current = head;
+            while (current != null)
+            {
+                if (current.Value.Equals(oldItem))
+                    current.Value = newItem;
+                current = current.Next;
+            }
+        }
+        public void ReplaceLast(T value)
+        {
+            NodeList<T> node = new NodeList<T>(value);
+            if (head == null)
+            {
+                head = node;
+                tail = node;
+            }
+            else
+                tail.Value = value;
+        } 
+        public void ReplaceFirst(T value)
+        {
+            NodeList<T> node = new NodeList<T>(value);
+            if (head == null)
+            {
+                head = node;
+                tail = node;
+            }
+            else
+                head.Value = value;
+        }
+        public void ClearAll()
+        {
+            head = null;
+            tail = null;
+            Count = 0;
+        }
+
+       
+        public void RVPrint()
+        {
+            NodeList<T> current = tail;
+            while (current != null)
+            {
+                Console.WriteLine(current.Value.ToString());
+                current = current.Previous;
+            }
+            Console.WriteLine();
+        }
+        public IEnumerator<T> GetEnumerator()
+        {
+            NodeList<T> current = head;
+            while (current != null)
+            {
+                yield return current.Value;
+                current = current.Next;
+            }
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+           return ((IEnumerable)this).GetEnumerator();
+        }
+        public void Print()
+        {
+            NodeList<T> current = head;
+            while (current != null)
+            {
+                Console.WriteLine(current.Value.ToString());
+                current = current.Next;
+            }
+            Console.WriteLine();
+        }
+    }
+}
